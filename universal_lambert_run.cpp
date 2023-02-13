@@ -52,16 +52,6 @@ int main() {
     std::cout << "Time taken to solve for 365 days: " <<  milli << " milliseconds" << std::endl;
 	cout<<"Average time to solve: "<<average<< " microseconds" <<endl;
     
-	/*
-	Gnuplot plot;
-	plot.set_style("lines");
-	plot.set_xlabel("Days from optimal Hohmann Alignment");
-	plot.set_ylabel("C_{3} (km^2/s^2)");
-	plot.set_title("C_{3} needed as a function of days from hohmann alignment");
-	plot.plot_xy(days, c3);
-    // Plot the C3 values
-    // ...
-    return 0;
-	*/
+
 	return 0;
 }
