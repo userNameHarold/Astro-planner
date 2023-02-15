@@ -114,7 +114,7 @@ void tlamb(double *dt, double *d2t, double *d3t, double *t, int m, double q, dou
 				if (l2){
 					*d2t = ( 3.0 * *t + 5.0 * x * *dt + 4.0 * qz * qsqfm1) / u;
 				}
-				if (l2) {
+				if (l3) {
 					*d3t = (8.0 * *dt + 7.0 * x * *d2t - 12.0 * qz * qz2 * x * qsqfm1) / u;
 				}
 			}
@@ -156,7 +156,7 @@ void tlamb(double *dt, double *d2t, double *d3t, double *t, int m, double q, dou
 			if(l2 && (icounter > 2)){
 				u2i = u2i * u;
 			}
-			if (l3 && (icounter < 3)){
+			if (l3 && (icounter > 3)){
 				u3i = u3i * u;
 			}
 			
@@ -171,7 +171,7 @@ void tlamb(double *dt, double *d2t, double *d3t, double *t, int m, double q, dou
 			tqterm = tqterm * p;
 			
 			if (l1) {
-				*dt = tqterm * u1i;
+				*dt = *dt + tqterm * u1i;
 			}
 			if(l2) {
 				*d2t = *d2t + tqterm * u2i * (p - 1.0);
