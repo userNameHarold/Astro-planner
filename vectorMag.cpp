@@ -12,7 +12,7 @@ double vectorMag(vector<double> v){
 	for(int i = 0; i < v.size(); ++i){
 		sum += v[i] * v[i];
 	}
-	return sum;
+	return sqrt(sum);
 
 }
 
