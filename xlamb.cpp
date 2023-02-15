@@ -90,7 +90,7 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 			tdiffm = tin - tmin;
 			
 			if (tdiffm < 0.0){
-				n = 0;
+				*n = 0;
 				termflag = true;
 				// this is the case where the provided m-value produces no solution
 			} else if (tdiffm == 0.0){
@@ -105,9 +105,9 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 					d2t = 6.0 * m * pi;
 				}
 				
-				*x = sqrt(tdiffm / (d2t / 2.0 + tdiffm / (pow(1.0 - xm, 2))));
+				*x = sqrt(tdiffm / (d2t / 2.0 + tdiffm / (pow((1.0 - xm), 2))));
 				w = xm + *x;
-				w = w * 4.0 / (4.0 + tdiffm) + pow(1.0 - w, 2);
+				w = w * 4.0 / (4.0 + tdiffm) + pow((1.0 - w), 2);
 				*x = *x * (1.0 - (1.0 + m + c41 * (thr2 - 0.5)) / (1.0 + c3 * m) * *x * (c1 * w + c2 * *x * sqrt(w))) + xm;
 				d2t2 = d2t / 2.0;
 				
@@ -132,7 +132,7 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 						*x = *x * (1.0 + (1.0 + m + c42 * (thr2 - 0.5)) / (1.0 + c3 * m) * *x * (c1 * w - c2 * *x * sqrt(w)));
 						
 						if (*x <= -1.0){
-							n = n - 1;
+							*n = *n - 1;
 							
 							if (*n == 1){
 								*x = *xpl;
@@ -174,7 +174,7 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 		if (tdiff <= 0.0){
 			*x = xm - sqrt(tdiffm / (d2t2 - tdiffm * (d2t2 / tdiff0 - 1.0 / (xm * xm))));
 		} else {
-			*x = -tdiff / (tdiffm / (d2t2 - tdiffm * (d2t2 / tdiff0 - 1.0 / (xm * xm))));
+			*x = -tdiff / (tdiff + 4.0);
 			w = *x + c0 * sqrt(2.0 * (1.0 - thr2));
 			if(w < 0.0){
 				*x = *x - sqrt(d8rt(-w)) * (*x + sqrt(tdiff / (tdiff + 1.5 * t0)));
@@ -183,7 +183,7 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 			*x = *x * (1.0 + (1.0 + m + c42 * (thr2 - 0.5)) / (1.0 + c3 * m) * *x *(c1 * w - c2 * *x * sqrt(w)));
 			
 			if (*x <= -1.0){
-				--n;
+				*n = *n - 1;
 				if (*n == 1){
 					// no finite soln for *x < xm
 					*x = *xpl;
