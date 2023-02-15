@@ -76,7 +76,7 @@ void vlamb(double *vr11, double *vr12, double *vr21, double *vr22, double *vt11,
 		tlamb(&qzminx, &qzplx, &zplqx, &t, m, q, qsqfm1, x, -1); // keep an eye on this line for errors
 		
 		vt2 = gms * zplqx * sqrt(sig);
-		vr1 = gms * (qzminx + qzplx * rho) / r1;
+		vr1 = gms * (qzminx - qzplx * rho) / r1;
 		vt1 = vt2 / r1;
 		vr2 = -gms * (qzminx + qzplx * rho) / r2;
 		vt2 = vt2 / r2;
@@ -86,7 +86,7 @@ void vlamb(double *vr11, double *vr12, double *vr21, double *vr22, double *vt11,
 			*vt11 = vt1;
 			*vr12 = vr2;
 			*vt12 = vt2;
-		} else if (i == (*n - 1)){
+		} else {//if (i == (*n - 1)){
 			*vr21 = vr1;
 			*vt21 = vt1;
 			*vr22 = vr2;
@@ -94,7 +94,6 @@ void vlamb(double *vr11, double *vr12, double *vr21, double *vr22, double *vt11,
 		}
 		
 	}
-	return;
 }
 
 
