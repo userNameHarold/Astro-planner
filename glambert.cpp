@@ -34,16 +34,20 @@
  
  void glambert(vector<double> *vi, vector<double> *vf, double cbmu, vector<double> pv1, vector<double> Vv1, vector<double> pv2, vector<double> Vv2, double TOF, int nrev) {
 	
+	
 	double vr11, vr12, vr21, vr22, vt11, vt12, vt21, vt22;
 	int n;
 
 	double r1mag = vectorMag(pv1);
 	double r2mag = vectorMag(pv2);
+	
 
 	vector<double> ur1xv1(3);
 	ur1xv1	= cross(&pv1, &Vv1);
+	
 
 	ur1xv1 = vectorScalarDivision(ur1xv1, vectorMag(ur1xv1));
+	
 
 	vector<double> ux1(3);
 	ux1 = vectorScalarDivision(pv1, r1mag);
