@@ -21,7 +21,7 @@
 
 float d8rt(float x){
 	
-	return sqrt(sqrt(x));
+	return sqrt(sqrt(sqrt(x)));
 }
 
 #endif

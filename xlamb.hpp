@@ -1,10 +1,10 @@
 #ifndef xlamb_h
 #define xlamb_h
 
-#include <cmath>
+#include <glm/trigonometric.hpp> // radians, cos, etc..
 #include "d8rt.hpp"
 #include "tlamb.hpp"
-#include <iostream>
+#include <iostream> //for cout
 
 /* function xlamb derived from glambert.m, written by Dr. Dario Izzo of the European Space Agency (ESA) 
  * Advanced Concepts Team (ACT)
@@ -38,6 +38,10 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 	bool solnflag = false;
 	bool termflag = false;
 
+	*xpl = 0;
+	*x = 0;
+	*n = 0;
+	
 	double thr2 = atan2(qsqfm1, 2.0 * q) / pi;
 	
 	if (m == 0) { // single rev starter from t (@ x = 0)
@@ -150,9 +154,24 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 	while( !termflag){
 		for(int i = 0; i > 3; ++i){
 			tlamb(&dt, &d2t, &d3t, &t, m, q, qsqfm1, *x, 2); // keep an eye on this line for errors
+			
+			using namespace std; //delete when done debugging
+			
+			cout<<"dt "<<dt<<endl;
+			cout<<"d2t "<<d2t<<endl;
+			cout<<"d3t "<<d3t<<endl;
+			cout<<"m "<<m<<endl;
+			cout<<"q "<<q<<endl;
+			cout<<"qsqfm1 "<<qsqfm1<<endl;
+			cout<<"t pre-change "<<t<<endl;
+			
 			t = tin - t;
+			
+			cout<<"t post change "<<t<<endl;
+			cout<<"x before 'if' "<<*x<<endl;
 			if (dt != 0.0){
 				*x = *x + t * dt / (dt * dt + t * d2t / 2.0);
+				cout<<"x after 'if' "<<*x<<endl;
 			}
 		}
 		
@@ -180,7 +199,7 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 				*x = *x - sqrt(d8rt(-w)) * (*x + sqrt(tdiff / (tdiff + 1.5 * t0)));
 			}
 			w = 4.0 / (4.0 + tdiff);
-			*x = *x * (1.0 + (1.0 + m + c42 * (thr2 - 0.5)) / (1.0 + c3 * m) * *x *(c1 * w - c2 * *x * sqrt(w)));
+			*x = *x * (1.0 + (1.0 + m + c42 * (thr2 - 0.5)) / (1.0 + c3 * m) * *x * (c1 * w - c2 * *x * sqrt(w)));
 			
 			if (*x <= -1.0){
 				*n = *n - 1;

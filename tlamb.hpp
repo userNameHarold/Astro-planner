@@ -1,7 +1,7 @@
 #ifndef tlamb_h
 #define tlamb_h
 
-#include <cmath>
+#include <glm/trigonometric.hpp> // radians, cos, etc..
 
 /* function tlamb derived from glambert.m, written by Dr. Dario Izzo of the European Space Agency (ESA) 
  * Advanced Concepts Team (ACT)
