@@ -2,7 +2,6 @@
 #define glambert_h
 
 #include <cmath>
-#include <vector>
 #include <iostream>
 #include "tlamb.cpp"
 #include "vlamb.cpp"
@@ -10,7 +9,8 @@
 #include "d8rt.cpp"
 #include "dot.cpp"
 #include "cross.cpp"
-#include "vectorMag.cpp"
+#include "dvec3Mag.hpp" // for calculating double precision magnitude of vectors, type glm::dvec3
+#include "makeUnitDvec3.hpp" // for turning vectors of type glm::dvec3 into unit vectors
 #include "vectorScalarDivision.cpp"
 #include "vectorScalarMultiplication.cpp"
 
@@ -30,37 +30,45 @@
  * Translated from MATLAB by R. Harold with permission
  */
  
- using namespace std;
+ /* Note: This project relies heavily on the OpenGL Mathmematics (GLM) Library. Out of respect for thier
+  * Happy Bunny license, we ask that this software not be used for military purposes.
+  *
+  * OpenGL Mathematics (GLM) is a header only C++ mathematics library for graphics software based on the 
+  * OpenGL Shading Language (GLSL) specifications. Please consider supporting their project: https://glm.g-truc.net/
+  */
+
+#include <glm/ext/vector_double3.hpp> // for dvec3 type, 3-component vectors of double precision
+//#include "glm/ext/vector_common.hpp" // common vector functions.... needed?
+#include <glm/geometric.hpp> // dot, cross, etc..
+#include <glm/trigonometric.hpp> // radians, cos, etc..
  
- void glambert(vector<double> *vi, vector<double> *vf, double cbmu, vector<double> pv1, vector<double> Vv1, vector<double> pv2, vector<double> Vv2, double TOF, int nrev) {
+ int glambert(glm::dvec3 *vi, glm::dvec3 *vf, double cbmu, glm::dvec3 pv1, glm::dvec3 Vv1, glm::dvec3 pv2, glm::dvec3 Vv2, double TOF, int nrev) {
 	
+	//using namespace std;
+	using namespace glm;
 	
 	double vr11, vr12, vr21, vr22, vt11, vt12, vt21, vt22;
 	int n;
 
-	double r1mag = vectorMag(pv1);
-	double r2mag = vectorMag(pv2);
+	double r1mag = dvec3Mag(pv1);
+	double r2mag = dvec3Mag(pv2);
 	
 
-	vector<double> ur1xv1(3);
-	ur1xv1	= cross(&pv1, &Vv1);
+	dvec3 ur1xv1	= cross(pv1, Vv1);
 	
 
-	ur1xv1 = vectorScalarDivision(ur1xv1, vectorMag(ur1xv1));
+	ur1xv1 =  makeUnitDvec3(ur1xv1);
 	
+	dvec3 ux1 = makeUnitDvec3(pv1);
+	dvec3 ux2 = makeUnitDvec3(pv2);
 
-	vector<double> ux1(3);
-	ux1 = vectorScalarDivision(pv1, r1mag);
-	vector<double> ux2(3);
-	ux2 = vectorScalarDivision(pv2, r2mag);
-
-	vector<double> uz1(3);
-	uz1 = cross(&ux1, &ux2);
-	uz1 = vectorScalarDivision(uz1, vectorMag(uz1));
 	
-	// vector<double> uz2; // note: in MATLAB code, uz2 is created and initialized to uz1, which is never changed after that. if incorrect values, look here
+	dvec3 uz1 = cross(ux1, ux2);
+	uz1 = makeUnitDvec3(uz1);
+	
+	// dvec3 uz2; // note: in MATLAB code, uz2 is created and initialized to uz1, which is never changed after that. if incorrect values, look here
 
-	double theta = dot(&ux1, &ux2);
+	double theta = dot(ux1, ux2);
 
 	if (theta > 1.0){
 	 theta = 1.0;
@@ -70,7 +78,7 @@
 
 	theta = acos(theta);
 	
-	double angle_to_on = dot(&ur1xv1, &uz1);
+	double angle_to_on = dot(ur1xv1, uz1);
 	if (angle_to_on > 1.0) {
 		angle_to_on = 1.0;
 	} else if (angle_to_on < -1.0) {
@@ -92,13 +100,13 @@
 	
 	
 	//uz2 = uz1; in MATLAB code, uz1 is never changed after here: if incorrect values, assign uz2 to uz1 and edit per MATLAB code
-	vector<double> uy1(3);
-	uy1 = cross(&uz1, &ux1);
-	uy1 = vectorScalarDivision(uy1, vectorMag(uy1));
+
+	dvec3 uy1 = cross(uz1, ux1);
+	uy1 = makeUnitDvec3(uy1);
 	
-	vector<double> uy2(3);
-	uy2 = cross(&uz1, &ux2);
-	uy2 = vectorScalarDivision(uy2, vectorMag(uy2));
+
+	dvec3 uy2 = cross(uz1, ux2);
+	uy2 = makeUnitDvec3(uy2);
 	
 	theta = theta + 2.0 * M_PI * abs(nrev);
 	
@@ -111,14 +119,14 @@
 				(*vi)[i] = 0.0;
 				(*vf)[i] = 0.0;
 			}
-			return;
+			return 1;
 		} else if (n == 0){
 			std::cout<<"No solution time"<< std::endl;;
 			for (int i = 0; i < 3; ++i){
 				(*vi)[i] = 0.0;
 				(*vf)[i] = 0.0;
 			}
-			return;
+			return 1;
 		}
 	}
 	
@@ -127,13 +135,13 @@
 			(*vi)[i] = ux1[i] * vr21 + uy1[i] * vt21;
 			(*vf)[i] = ux2[i] * vr22 + uy2[i] * vt22;
 		}
-		return;
+		return 1;
 	} else{
 		for(int i = 0; i < 3; ++i){
 			(*vi)[i] = ux1[i] * vr11 + uy1[i] * vt11;
 			(*vf)[i] = ux2[i] * vr12 + uy2[i] * vt12;
 		}
-		return;
+		return 1;
 	}
  }
 
