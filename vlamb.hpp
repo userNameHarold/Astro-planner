@@ -2,10 +2,9 @@
 #define vlamb_h
 
 #include <glm/trigonometric.hpp> // radians, cos, etc..
-#include "tlamb.hpp"
-#include "xlamb.hpp"
+#include "tlamb.hpp" // tlamb function 
+#include "xlamb.hpp" //xlamb function
 
-#include <iostream> // to print for debugging
 
 /* function vlamb derived from glambert.m, written by Dr. Dario Izzo of the European Space Agency (ESA) 
  * Advanced Concepts Team (ACT)
@@ -44,14 +43,13 @@ void vlamb(double *vr11, double *vr12, double *vr21, double *vr22, double *vt11,
 	*vt22 = 0;
 	*n = 0;
 
-
-
-using namespace std; // needed only for cout, delete when done debugging
-	
+	// adjust for multi-rev
 	while(thr2 > (2.0 * pi)){
 		thr2 = thr2 - 2.0 * pi;
 		++m;
 	}
+	
+	//set up variables 
 	thr2 = thr2 / 2.0;
 	dr = r1 - r2;
 	r1r2 = r1 * r2;
@@ -73,33 +71,9 @@ using namespace std; // needed only for cout, delete when done debugging
 	
 	t = 4.0 * gms * tdelt / (s * s);
 	
-	// cout<<endl<<"In vlamb, before call to xlamb"<<endl;
-	// // cout<<"c "<<c<<endl;
-	// // cout<<"csq "<<csq<<endl;
-	// // cout<<"dr "<<dr<<endl;
-	// // cout<<"gms "<<gms<<endl;
-	// cout<<"q "<<q<<endl;
-	// cout<<"qsqfm1 "<<qsqfm1<<endl;
-	// // cout<<"r1 "<<r1<<endl;
-	// // cout<<"r1r2 "<<r1r2<<endl;
-	// // cout<<"r1r2th "<<r1r2th<<endl;
-	// // cout<<"r2 "<< r2<<endl;
-	// // cout<<"rho "<<rho<<endl;
-	// // cout<<"s "<<s<<endl;
-	// // cout<<"sig "<<sig<<endl;
-	// cout<<"t "<<t<<endl;
-	// // cout<<"tdelt "<<tdelt<<endl;
-	// // cout<<"thr2 "<<thr2<<endl<<endl;
-	// cout<<"n "<<*n<<endl;
-	// cout<<"m "<<m<<endl;
 
-	
 	xlamb(&x1, &x2, n, m, q, qsqfm1, t);
 	
-	// cout<<"N return from xlamb is "<<*n<<endl;
-	
-	// cout<<"x1 "<<x1<<endl;
-	// cout<<"x2 "<<x2<<endl;
 	
 	for(int i = 0; i < *n; ++i){
 		if (i == 0){
@@ -107,19 +81,9 @@ using namespace std; // needed only for cout, delete when done debugging
 		} else{
 			x = x2;
 		}
-		// cout<<"x "<<x<<endl;
-		tlamb(&qzminx, &qzplx, &zplqx, &foo, m, q, qsqfm1, x, -1); // keep an eye on this line for errors
+
+		tlamb(&qzminx, &qzplx, &zplqx, &foo, m, q, qsqfm1, x, -1); 
 		
-		// cout<<endl<<" i "<<i<<endl;
-		// cout<<"qzminx "<<qzminx<<endl;
-		// cout<<"qzplx "<<qzplx<<endl;
-		// cout<<"zplqx "<<zplqx<<endl<<endl;
-		
-		// vt2 = gms * zplqx * sqrt(sig);
-		// vr1 = gms * (qzminx - qzplx * rho) / r1;
-		// vt1 = vt2 / r1;
-		// vr2 = -gms * (qzminx + qzplx * rho) / r2;
-		// vt2 = vt2 / r2;
 		
 		vt2 = gms * zplqx * sqrt(sig);
 
@@ -136,7 +100,7 @@ using namespace std; // needed only for cout, delete when done debugging
 			*vt11 = vt1;
 			*vr12 = vr2;
 			*vt12 = vt2;
-		} else {//if (i == (*n - 1)){
+		} else if (i == (*n - 1)){
 			*vr21 = vr1;
 			*vt21 = vt1;
 			*vr22 = vr2;
