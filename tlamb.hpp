@@ -1,7 +1,8 @@
 #ifndef tlamb_h
 #define tlamb_h
 
-#include <cmath>
+#include <glm/trigonometric.hpp> // radians, cos, etc..
+
 
 /* function tlamb derived from glambert.m, written by Dr. Dario Izzo of the European Space Agency (ESA) 
  * Advanced Concepts Team (ACT)
@@ -18,7 +19,6 @@
  *
  * Translated from MATLAB by R. Harold with permission
  */
-
 
 
 void tlamb(double *dt, double *d2t, double *d3t, double *t, int m, double q, double qsqfm1, double x, int n){
@@ -40,6 +40,7 @@ void tlamb(double *dt, double *d2t, double *d3t, double *t, int m, double q, dou
 		*d2t = 0.0;
 		*d3t = 0.0;
 	}
+	 
 	 
 	if (lm1 || (m > 0) || (x < 0.0) || (fabs(u) > sw)){
 		// direct computation, no series

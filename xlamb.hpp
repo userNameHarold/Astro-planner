@@ -1,10 +1,10 @@
 #ifndef xlamb_h
 #define xlamb_h
 
-#include <cmath>
-#include "d8rt.hpp"
-#include "tlamb.hpp"
-#include <iostream>
+#include <glm/trigonometric.hpp> // radians, cos, etc..
+#include "d8rt.hpp" // function d8rt
+#include "tlamb.hpp" //function tlamb
+#include <iostream> //for cout
 
 /* function xlamb derived from glambert.m, written by Dr. Dario Izzo of the European Space Agency (ESA) 
  * Advanced Concepts Team (ACT)
@@ -24,7 +24,7 @@
 
 
 
-void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int tin){
+void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, double tin){
 	const double pi = M_PI;
 	const double tol = 3*pow(10,-7);
 	const double c0 = 1.7;
@@ -38,11 +38,15 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 	bool solnflag = false;
 	bool termflag = false;
 
+	*xpl = 0;
+	*x = 0;
+	*n = 0;
+	
 	double thr2 = atan2(qsqfm1, 2.0 * q) / pi;
 	
 	if (m == 0) { // single rev starter from t (@ x = 0)
 		*n = 1;
-		tlamb(&dt, &d2t, &d3t, &t0, m, q, qsqfm1, 0.0, 0); // keep an eye on this line for errors
+		tlamb(&dt, &d2t, &d3t, &t0, m, q, qsqfm1, 0.0, 0); 
 		tdiff = tin - t0;
 		if (tdiff <= 0.0) {
 		  *x = t0 * tdiff / (-4.0 * tin);
@@ -55,6 +59,7 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 		  w = 4.0 / (4.0 + tdiff);
 		  *x = *x * (1.0 + *x * (c1 * w - c2 * *x * sqrt(w)));
 		}
+		
 	} else { // multirevs, get t(min) as basis 
 		xm = 1.0 / (1.5 * (m + 0.5) * pi);
 		
@@ -63,7 +68,7 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 		} else if (thr2 > 0.5) {
 			xm = (2.0 - d8rt(2.0 - 2.0 * thr2)) * xm;
 		} else {
-			std::cout<< "glambert does not have code for this eventuallity, thr2 == 0.5 '('xlamb.cpp, line 50')'" << std::endl;
+			std::cout<< "glambert does not have code for this eventuallity, thr2 == 0.5 '('xlamb.hpp, line 66')'" << std::endl;
 		}
 		
 
@@ -114,7 +119,7 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 				if (*x >= 1.0){
 					*n = 1;
 					
-					tlamb(&dt, &d2t, &d3t, &t0, m, q, qsqfm1, 0.0, 0); // keep an eye on this line for errors
+					tlamb(&dt, &d2t, &d3t, &t0, m, q, qsqfm1, 0.0, 0); 
 					tdiff0 = t0 - tmin;
 					tdiff = tin - t0;
 					
@@ -148,9 +153,11 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 	}
 	
 	while( !termflag){
-		for(int i = 0; i > 3; ++i){
-			tlamb(&dt, &d2t, &d3t, &t, m, q, qsqfm1, *x, 2); // keep an eye on this line for errors
+		for(int i = 0; i < 3; ++i){
+			tlamb(&dt, &d2t, &d3t, &t, m, q, qsqfm1, *x, 2); 
+		
 			t = tin - t;
+			
 			if (dt != 0.0){
 				*x = *x + t * dt / (dt * dt + t * d2t / 2.0);
 			}
@@ -180,7 +187,7 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 				*x = *x - sqrt(d8rt(-w)) * (*x + sqrt(tdiff / (tdiff + 1.5 * t0)));
 			}
 			w = 4.0 / (4.0 + tdiff);
-			*x = *x * (1.0 + (1.0 + m + c42 * (thr2 - 0.5)) / (1.0 + c3 * m) * *x *(c1 * w - c2 * *x * sqrt(w)));
+			*x = *x * (1.0 + (1.0 + m + c42 * (thr2 - 0.5)) / (1.0 + c3 * m) * *x * (c1 * w - c2 * *x * sqrt(w)));
 			
 			if (*x <= -1.0){
 				*n = *n - 1;
