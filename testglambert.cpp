@@ -1,7 +1,7 @@
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <sstream>
+#include <vector> // for indexing ephemeris data
+#include <iostream> // for printing computational results to screen
+#include <fstream> // for reading data from csv
+#include <sstream> // for reading data from csv
 
 
 #include <glm/ext/vector_double3.hpp> // for dvec3 type, 3-component vectors of double precision
