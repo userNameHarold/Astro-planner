@@ -42,7 +42,7 @@ void tlamb(double *dt, double *d2t, double *d3t, double *t, int m, double q, dou
 		*d3t = 0.0;
 	}
 	 
-	cout<<"lm1 "<<lm1<<endl<<"m "<<m<<endl<<"x "<<x<<endl<<"u "<<u<<endl<<"sw "<<sw<<endl;
+	cout<<"lm1 "<<lm1<<endl<<"m "<<m<<endl<<"x "<<x<<endl<<"u "<<u<<endl<<"sw "<<sw<<endl<<"n "<<n<<endl;
 	 
 	if (lm1 || (m > 0) || (x < 0.0) || (fabs(u) > sw)){
 		// direct computation, no series

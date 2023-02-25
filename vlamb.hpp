@@ -73,45 +73,47 @@ using namespace std; // needed only for cout, delete when done debugging
 	
 	t = 4.0 * gms * tdelt / (s * s);
 	
-	cout<<endl<<"In vlamb, before call to xlamb"<<endl;
-	// cout<<"c "<<c<<endl;
-	// cout<<"csq "<<csq<<endl;
-	// cout<<"dr "<<dr<<endl;
-	// cout<<"gms "<<gms<<endl;
-	cout<<"q "<<q<<endl;
-	cout<<"qsqfm1 "<<qsqfm1<<endl;
-	// cout<<"r1 "<<r1<<endl;
-	// cout<<"r1r2 "<<r1r2<<endl;
-	// cout<<"r1r2th "<<r1r2th<<endl;
-	// cout<<"r2 "<< r2<<endl;
-	// cout<<"rho "<<rho<<endl;
-	// cout<<"s "<<s<<endl;
-	// cout<<"sig "<<sig<<endl;
-	cout<<"t "<<t<<endl;
-	// cout<<"tdelt "<<tdelt<<endl;
-	// cout<<"thr2 "<<thr2<<endl<<endl;
-	cout<<"n "<<*n<<endl;
-	cout<<"m "<<m<<endl;
+	// cout<<endl<<"In vlamb, before call to xlamb"<<endl;
+	// // cout<<"c "<<c<<endl;
+	// // cout<<"csq "<<csq<<endl;
+	// // cout<<"dr "<<dr<<endl;
+	// // cout<<"gms "<<gms<<endl;
+	// cout<<"q "<<q<<endl;
+	// cout<<"qsqfm1 "<<qsqfm1<<endl;
+	// // cout<<"r1 "<<r1<<endl;
+	// // cout<<"r1r2 "<<r1r2<<endl;
+	// // cout<<"r1r2th "<<r1r2th<<endl;
+	// // cout<<"r2 "<< r2<<endl;
+	// // cout<<"rho "<<rho<<endl;
+	// // cout<<"s "<<s<<endl;
+	// // cout<<"sig "<<sig<<endl;
+	// cout<<"t "<<t<<endl;
+	// // cout<<"tdelt "<<tdelt<<endl;
+	// // cout<<"thr2 "<<thr2<<endl<<endl;
+	// cout<<"n "<<*n<<endl;
+	// cout<<"m "<<m<<endl;
 
 	
 	xlamb(&x1, &x2, n, m, q, qsqfm1, t);
 	
-	cout<<"x1 "<<x1<<endl;
-	cout<<"x2 "<<x2<<endl;
+	// cout<<"N return from xlamb is "<<*n<<endl;
+	
+	// cout<<"x1 "<<x1<<endl;
+	// cout<<"x2 "<<x2<<endl;
 	
 	for(int i = 0; i < *n; ++i){
-		if (i == 1){
+		if (i == 0){
 			x = x1;
 		} else{
 			x = x2;
 		}
-		
+		// cout<<"x "<<x<<endl;
 		tlamb(&qzminx, &qzplx, &zplqx, &foo, m, q, qsqfm1, x, -1); // keep an eye on this line for errors
 		
-		cout<<endl<<" i "<<i<<endl;
-		cout<<"qzminx "<<qzminx<<endl;
-		cout<<"qzplx "<<qzplx<<endl;
-		cout<<"zplqx "<<zplqx<<endl<<endl;
+		// cout<<endl<<" i "<<i<<endl;
+		// cout<<"qzminx "<<qzminx<<endl;
+		// cout<<"qzplx "<<qzplx<<endl;
+		// cout<<"zplqx "<<zplqx<<endl<<endl;
 		
 		// vt2 = gms * zplqx * sqrt(sig);
 		// vr1 = gms * (qzminx - qzplx * rho) / r1;
@@ -129,7 +131,7 @@ using namespace std; // needed only for cout, delete when done debugging
 
 		vt2 = vt2 / r2;
 		
-		if ( i == 1){
+		if ( i == 0){
 			*vr11 = vr1;
 			*vt11 = vt1;
 			*vr12 = vr2;
