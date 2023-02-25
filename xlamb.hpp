@@ -24,7 +24,7 @@
 
 
 
-void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int tin){
+void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, double tin){
 	const double pi = M_PI;
 	const double tol = 3*pow(10,-7);
 	const double c0 = 1.7;
@@ -47,7 +47,9 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 	if (m == 0) { // single rev starter from t (@ x = 0)
 		*n = 1;
 		tlamb(&dt, &d2t, &d3t, &t0, m, q, qsqfm1, 0.0, 0); // keep an eye on this line for errors
+		// std::cout<<dt<<d2t<<d3t<<t0<<std::endl;
 		tdiff = tin - t0;
+		// std::cout<<tin<<" "<<t0<<" "<<tdiff<<std::endl;
 		if (tdiff <= 0.0) {
 		  *x = t0 * tdiff / (-4.0 * tin);
 		} else {
@@ -59,6 +61,7 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 		  w = 4.0 / (4.0 + tdiff);
 		  *x = *x * (1.0 + *x * (c1 * w - c2 * *x * sqrt(w)));
 		}
+		// std::cout<<w<<*x<<std::endl;
 	} else { // multirevs, get t(min) as basis 
 		xm = 1.0 / (1.5 * (m + 0.5) * pi);
 		
@@ -150,28 +153,28 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, int t
 			termflag = true;
 		}
 	}
-	
+	std::cout<<"termflag "<<termflag<<std::endl;
 	while( !termflag){
-		for(int i = 0; i > 3; ++i){
+		for(int i = 0; i < 3; ++i){
 			tlamb(&dt, &d2t, &d3t, &t, m, q, qsqfm1, *x, 2); // keep an eye on this line for errors
 			
 			using namespace std; //delete when done debugging
 			
-			cout<<"dt "<<dt<<endl;
-			cout<<"d2t "<<d2t<<endl;
-			cout<<"d3t "<<d3t<<endl;
-			cout<<"m "<<m<<endl;
-			cout<<"q "<<q<<endl;
-			cout<<"qsqfm1 "<<qsqfm1<<endl;
-			cout<<"t pre-change "<<t<<endl;
+			// cout<<"dt "<<dt<<endl;
+			// cout<<"d2t "<<d2t<<endl;
+			// cout<<"d3t "<<d3t<<endl;
+			// cout<<"m "<<m<<endl;
+			// cout<<"q "<<q<<endl;
+			// cout<<"qsqfm1 "<<qsqfm1<<endl;
+			// cout<<"t pre-change "<<t<<endl;
 			
 			t = tin - t;
 			
-			cout<<"t post change "<<t<<endl;
-			cout<<"x before 'if' "<<*x<<endl;
+			// cout<<"t post change "<<t<<endl;
+			// cout<<"x before 'if' "<<*x<<endl;
 			if (dt != 0.0){
 				*x = *x + t * dt / (dt * dt + t * d2t / 2.0);
-				cout<<"x after 'if' "<<*x<<endl;
+				// cout<<"x after 'if' "<<*x<<endl;
 			}
 		}
 		

@@ -74,22 +74,24 @@ using namespace std; // needed only for cout, delete when done debugging
 	t = 4.0 * gms * tdelt / (s * s);
 	
 	cout<<endl<<"In vlamb, before call to xlamb"<<endl;
-	cout<<"c "<<c<<endl;
-	cout<<"csq "<<csq<<endl;
-	cout<<"dr "<<dr<<endl;
-	cout<<"gms "<<gms<<endl;
+	// cout<<"c "<<c<<endl;
+	// cout<<"csq "<<csq<<endl;
+	// cout<<"dr "<<dr<<endl;
+	// cout<<"gms "<<gms<<endl;
 	cout<<"q "<<q<<endl;
 	cout<<"qsqfm1 "<<qsqfm1<<endl;
-	cout<<"r1 "<<r1<<endl;
-	cout<<"r1r2 "<<r1r2<<endl;
-	cout<<"r1r2th "<<r1r2th<<endl;
-	cout<<"r2 "<< r2<<endl;
-	cout<<"rho "<<rho<<endl;
-	cout<<"s "<<s<<endl;
-	cout<<"sig "<<sig<<endl;
+	// cout<<"r1 "<<r1<<endl;
+	// cout<<"r1r2 "<<r1r2<<endl;
+	// cout<<"r1r2th "<<r1r2th<<endl;
+	// cout<<"r2 "<< r2<<endl;
+	// cout<<"rho "<<rho<<endl;
+	// cout<<"s "<<s<<endl;
+	// cout<<"sig "<<sig<<endl;
 	cout<<"t "<<t<<endl;
-	cout<<"tdelt "<<tdelt<<endl;
-	cout<<"thr2 "<<thr2<<endl<<endl;
+	// cout<<"tdelt "<<tdelt<<endl;
+	// cout<<"thr2 "<<thr2<<endl<<endl;
+	cout<<"n "<<*n<<endl;
+	cout<<"m "<<m<<endl;
 
 	
 	xlamb(&x1, &x2, n, m, q, qsqfm1, t);

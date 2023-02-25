@@ -46,21 +46,21 @@
 	double vr11, vr12, vr21, vr22, vt11, vt12, vt21, vt22 = 0;
 	int n = 0;
 
-	dvec3 testr1 = {pv1[0], Vv1[0], pv1[1]};
-	dvec3 testr2 = {pv2[0], Vv2[0], pv2[1]};
-	dvec3 testv1 = {Vv1[1], pv1[2], Vv1[2]};
-
-	double r1mag = dvec3Mag(testr1);
-	double r2mag = dvec3Mag(testr2);
+	dvec3 sv1_1_3 = {pv1[0], Vv1[0], pv1[1]}; // these declarations courtesy of "trust me bro" mathmatics 
+	dvec3 sv2_1_3 = {pv2[0], Vv2[0], pv2[1]}; // seriously, I have no idea why these are so, but its necessary
+	dvec3 sv1_4_6 = {Vv1[1], pv1[2], Vv1[2]}; // or you wind up taking the cross product of a vector and itself 
+											 // and the floating pooint handlers don't seem to catch it.
+	double r1mag = dvec3Mag(sv1_1_3);
+	double r2mag = dvec3Mag(sv2_1_3);
 	
 
-	dvec3 ur1xv1 = cross(testr1, testv1);
+	dvec3 ur1xv1 = cross(sv1_1_3, sv1_4_6);
 	printdvec3(ur1xv1);
 	
 	ur1xv1 =  makeUnitDvec3(ur1xv1);
 	
-	dvec3 ux1 = makeUnitDvec3(testr1);
-	dvec3 ux2 = makeUnitDvec3(testr2);
+	dvec3 ux1 = makeUnitDvec3(sv1_1_3);
+	dvec3 ux2 = makeUnitDvec3(sv2_1_3);
 
 	
 	dvec3 uz1 = cross(ux1, ux2);
