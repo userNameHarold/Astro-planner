@@ -68,7 +68,7 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, doubl
 		} else if (thr2 > 0.5) {
 			xm = (2.0 - d8rt(2.0 - 2.0 * thr2)) * xm;
 		} else {
-			std::cout<< "glambert does not have code for this eventuallity, thr2 == 0.5 '('xlamb.cpp, line 50')'" << std::endl;
+			std::cout<< "glambert does not have code for this eventuallity, thr2 == 0.5 '('xlamb.hpp, line 66')'" << std::endl;
 		}
 		
 
@@ -151,7 +151,7 @@ void xlamb(double *x, double *xpl, int *n, int m, double q, double qsqfm1, doubl
 			termflag = true;
 		}
 	}
-	std::cout<<"termflag "<<termflag<<std::endl;
+	
 	while( !termflag){
 		for(int i = 0; i < 3; ++i){
 			tlamb(&dt, &d2t, &d3t, &t, m, q, qsqfm1, *x, 2); 

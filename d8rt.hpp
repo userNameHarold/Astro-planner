@@ -19,6 +19,8 @@
  * Translated from MATLAB by R. Harold with permission
  */
 
+
+// returns 3rd square root of x
 float d8rt(float x){
 	
 	return sqrt(sqrt(sqrt(x)));

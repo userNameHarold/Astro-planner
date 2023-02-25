@@ -3,13 +3,12 @@
 
 
 #include <iostream>
-#include "tlamb.hpp"
-#include "vlamb.hpp"
-#include "xlamb.hpp"
-#include "d8rt.hpp"
+#include "tlamb.hpp" // function tlamb
+#include "vlamb.hpp" // function vlamb
+#include "xlamb.hpp" // function xlamb
+#include "d8rt.hpp"  // function d8rt
 #include "dvec3Mag.hpp" // for calculating double precision magnitude of vectors, type glm::dvec3
 #include "makeUnitDvec3.hpp" // for turning vectors of type glm::dvec3 into unit vectors
-#include "printdvec3.hpp" // for printing vectors to debug
 
 
 /* function glambert derived from glambert.m, written by Dr. Dario Izzo of the European Space Agency (ESA) 
@@ -55,7 +54,6 @@
 	
 
 	dvec3 ur1xv1 = cross(sv1_1_3, sv1_4_6);
-	printdvec3(ur1xv1);
 	
 	ur1xv1 =  makeUnitDvec3(ur1xv1);
 	
@@ -78,7 +76,6 @@
 	theta = acos(theta);
 	
 	double angle_to_on = dot(ur1xv1, uz1);
-	std::cout<<" angle to on:" <<angle_to_on<<std::endl;
 	
 	
 	if (angle_to_on > 1.0) {
@@ -87,8 +84,6 @@
 		angle_to_on = -1.0;
 	}
 	angle_to_on = acos(angle_to_on);
-	std::cout<<" angle to on:" <<angle_to_on<<std::endl;
-	std::cout<<"done changing angle to on"<<std::endl;
 	
 	if ((angle_to_on > 0.5 * M_PI) && (TOF > 0.0)){
 		theta = 2.0 * M_PI - theta;
@@ -114,8 +109,6 @@
 	
 	vlamb(&vr11, &vr12, &vr21, &vr22, &vt11, &vt12, &vt21, &vt22, &n, cbmu, r1mag, r2mag, theta, TOF);
 	
-		using namespace std;
-
 	
 	if (abs(nrev) > 0){
 		if (n == -1) {
@@ -124,40 +117,6 @@
 				(*vi)[i] = 0.0;
 				(*vf)[i] = 0.0;
 			}
-			cout<<"angle to on " <<angle_to_on<<endl;
-			cout<< "cbmu "<<cbmu<<endl;
-			cout<<"n "<<n<<endl;
-			cout<<"nrev "<<nrev<<endl;
-			cout<<"r1mag "<<r1mag<<endl;
-			cout<<"r2mag "<<r2mag<<endl;
-			cout<<"sv1 {"<<pv1[0]<<" "<<pv1[1]<<" "<<pv1[2]<<" "<<Vv1[0]<<" "<<Vv1[1]<<" "<<Vv1[2]<<"}"<<endl;
-			cout<<"sv2 {"<<pv2[0]<<" "<<pv2[1]<<" "<<pv2[2]<<" "<<Vv2[0]<<" "<<Vv2[1]<<" "<<Vv2[2]<<"}"<<endl;
-			cout<<"theta "<<theta<<endl;
-			cout<<"tof "<<TOF<<endl;
-			cout<<"ur1xv1 " ;
-			printdvec3(ur1xv1);
-			cout<<"ux1 ";
-			printdvec3(ux1);
-			cout<<"ux2 ";
-			printdvec3(ux2);
-			cout<<"uy1 ";
-			printdvec3(uy1);
-			cout<<"uy2 ";
-			printdvec3(uy2);
-			cout<<"uz1 ";
-			printdvec3(uz1);
-			cout<<"vi ";
-			printdvec3(*vi);
-			cout<<"vf ";
-			printdvec3(*vf);
-			cout<<"vr11 "<<vr11<<endl;
-			cout<<"vr12 "<<vr12<<endl;
-			cout<<"vr21 "<<vr21<<endl;
-			cout<<"vr22 "<<vr22<<endl;
-			cout<<"vt11 "<<vt11<<endl;
-			cout<<"vt12 "<<vt12<<endl;
-			cout<<"vt21 "<<vt21<<endl;
-			cout<<"vt22 "<<vt22<<endl;
 			return 1;
 		} else if (n == 0){
 			std::cout<<"No solution time"<< std::endl;;
@@ -165,40 +124,6 @@
 				(*vi)[i] = 0.0;
 				(*vf)[i] = 0.0;
 			}
-			cout<<"angle to on " <<angle_to_on<<endl;
-			cout<< "cbmu "<<cbmu<<endl;
-			cout<<"n "<<n<<endl;
-			cout<<"nrev "<<nrev<<endl;
-			cout<<"r1mag "<<r1mag<<endl;
-			cout<<"r2mag "<<r2mag<<endl;
-			cout<<"sv1 {"<<pv1[0]<<" "<<pv1[1]<<" "<<pv1[2]<<" "<<Vv1[0]<<" "<<Vv1[1]<<" "<<Vv1[2]<<"}"<<endl;
-			cout<<"sv2 {"<<pv2[0]<<" "<<pv2[1]<<" "<<pv2[2]<<" "<<Vv2[0]<<" "<<Vv2[1]<<" "<<Vv2[2]<<"}"<<endl;
-			cout<<"theta "<<theta<<endl;
-			cout<<"tof "<<TOF<<endl;
-			cout<<"ur1xv1 " ;
-			printdvec3(ur1xv1);
-			cout<<"ux1 ";
-			printdvec3(ux1);
-			cout<<"ux2 ";
-			printdvec3(ux2);
-			cout<<"uy1 ";
-			printdvec3(uy1);
-			cout<<"uy2 ";
-			printdvec3(uy2);
-			cout<<"uz1 ";
-			printdvec3(uz1);
-			cout<<"vi ";
-			printdvec3(*vi);
-			cout<<"vf ";
-			printdvec3(*vf);
-			cout<<"vr11 "<<vr11<<endl;
-			cout<<"vr12 "<<vr12<<endl;
-			cout<<"vr21 "<<vr21<<endl;
-			cout<<"vr22 "<<vr22<<endl;
-			cout<<"vt11 "<<vt11<<endl;
-			cout<<"vt12 "<<vt12<<endl;
-			cout<<"vt21 "<<vt21<<endl;
-			cout<<"vt22 "<<vt22<<endl;
 			return 1;
 		}
 	}
@@ -208,118 +133,14 @@
 			(*vi)[i] = ux1[i] * vr21 + uy1[i] * vt21;
 			(*vf)[i] = ux2[i] * vr22 + uy2[i] * vt22;
 		}
-		cout<<"angle to on " <<angle_to_on<<endl;
-		cout<< "cbmu "<<cbmu<<endl;
-		cout<<"n "<<n<<endl;
-		cout<<"nrev "<<nrev<<endl;
-		cout<<"r1mag "<<r1mag<<endl;
-		cout<<"r2mag "<<r2mag<<endl;
-		cout<<"sv1 {"<<pv1[0]<<" "<<pv1[1]<<" "<<pv1[2]<<" "<<Vv1[0]<<" "<<Vv1[1]<<" "<<Vv1[2]<<"}"<<endl;
-		cout<<"sv2 {"<<pv2[0]<<" "<<pv2[1]<<" "<<pv2[2]<<" "<<Vv2[0]<<" "<<Vv2[1]<<" "<<Vv2[2]<<"}"<<endl;
-		cout<<"theta "<<theta<<endl;
-		cout<<"tof "<<TOF<<endl;
-		cout<<"ur1xv1 " ;
-		printdvec3(ur1xv1);
-		cout<<"ux1 ";
-		printdvec3(ux1);
-		cout<<"ux2 ";
-		printdvec3(ux2);
-		cout<<"uy1 ";
-		printdvec3(uy1);
-		cout<<"uy2 ";
-		printdvec3(uy2);
-		cout<<"uz1 ";
-		printdvec3(uz1);
-		cout<<"vi ";
-		printdvec3(*vi);
-		cout<<"vf ";
-		printdvec3(*vf);
-		cout<<"vr11 "<<vr11<<endl;
-		cout<<"vr12 "<<vr12<<endl;
-		cout<<"vr21 "<<vr21<<endl;
-		cout<<"vr22 "<<vr22<<endl;
-		cout<<"vt11 "<<vt11<<endl;
-		cout<<"vt12 "<<vt12<<endl;
-		cout<<"vt21 "<<vt21<<endl;
-		cout<<"vt22 "<<vt22<<endl;
 		return 1;
 	} else{
 		for(int i = 0; i < 3; ++i){
 			(*vi)[i] = ux1[i] * vr11 + uy1[i] * vt11;
 			(*vf)[i] = ux2[i] * vr12 + uy2[i] * vt12;
 		}
-		cout<<"angle to on " <<angle_to_on<<endl;
-		cout<< "cbmu "<<cbmu<<endl;
-		cout<<"n "<<n<<endl;
-		cout<<"nrev "<<nrev<<endl;
-		cout<<"r1mag "<<r1mag<<endl;
-		cout<<"r2mag "<<r2mag<<endl;
-		cout<<"sv1 {"<<pv1[0]<<" "<<pv1[1]<<" "<<pv1[2]<<" "<<Vv1[0]<<" "<<Vv1[1]<<" "<<Vv1[2]<<"}"<<endl;
-		cout<<"sv2 {"<<pv2[0]<<" "<<pv2[1]<<" "<<pv2[2]<<" "<<Vv2[0]<<" "<<Vv2[1]<<" "<<Vv2[2]<<"}"<<endl;
-		cout<<"theta "<<theta<<endl;
-		cout<<"tof "<<TOF<<endl;
-		cout<<"ur1xv1 " ;
-		printdvec3(ur1xv1);
-		cout<<"ux1 ";
-		printdvec3(ux1);
-		cout<<"ux2 ";
-		printdvec3(ux2);
-		cout<<"uy1 ";
-		printdvec3(uy1);
-		cout<<"uy2 ";
-		printdvec3(uy2);
-		cout<<"uz1 ";
-		printdvec3(uz1);
-		cout<<"vi ";
-		printdvec3(*vi);
-		cout<<"vf ";
-		printdvec3(*vf);
-		cout<<"vr11 "<<vr11<<endl;
-		cout<<"vr12 "<<vr12<<endl;
-		cout<<"vr21 "<<vr21<<endl;
-		cout<<"vr22 "<<vr22<<endl;
-		cout<<"vt11 "<<vt11<<endl;
-		cout<<"vt12 "<<vt12<<endl;
-		cout<<"vt21 "<<vt21<<endl;
-		cout<<"vt22 "<<vt22<<endl;
 		return 1;
 	}
-	
-	
-	cout<<"angle to on " <<angle_to_on<<endl;
-	cout<< "cbmu "<<cbmu<<endl;
-	cout<<"n "<<n<<endl;
-	cout<<"nrev "<<nrev<<endl;
-	cout<<"r1mag "<<r1mag<<endl;
-	cout<<"r2mag "<<r2mag<<endl;
-	cout<<"sv1 {"<<pv1[0]<<" "<<pv1[1]<<" "<<pv1[2]<<" "<<Vv1[0]<<" "<<Vv1[1]<<" "<<Vv1[2]<<"}"<<endl;
-	cout<<"sv2 {"<<pv2[0]<<" "<<pv2[1]<<" "<<pv2[2]<<" "<<Vv2[0]<<" "<<Vv2[1]<<" "<<Vv2[2]<<"}"<<endl;
-	cout<<"theta "<<theta<<endl;
-	cout<<"tof "<<TOF<<endl;
-	cout<<"ur1xv1 " ;
-	printdvec3(ur1xv1);
-	cout<<"ux1 ";
-	printdvec3(ux1);
-	cout<<"ux2 ";
-	printdvec3(ux2);
-	cout<<"uy1 ";
-	printdvec3(uy1);
-	cout<<"uy2 ";
-	printdvec3(uy2);
-	cout<<"uz1 ";
-	printdvec3(uz1);
-	cout<<"vi ";
-	printdvec3(*vi);
-	cout<<"vf ";
-	printdvec3(*vf);
-	cout<<"vr11 "<<vr11<<endl;
-	cout<<"vr12 "<<vr12<<endl;
-	cout<<"vr21 "<<vr21<<endl;
-	cout<<"vr22 "<<vr22<<endl;
-	cout<<"vt11 "<<vt11<<endl;
-	cout<<"vt12 "<<vt12<<endl;
-	cout<<"vt21 "<<vt21<<endl;
-	cout<<"vt22 "<<vt22<<endl;
 	
 	
 	return -1;

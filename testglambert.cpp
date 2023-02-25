@@ -28,17 +28,6 @@ int main(){
 	
 	
 	using namespace std;
-	//vi[1] = 3.14159;
-	//vf[1] = 6.283;
-	cout<<endl<<endl<< "GLambert inputs:"<<endl;
-	cout<< "Position of Body 1: {" << pv1[0] << " " << pv1[1]<< " " << pv1[2]<< "}"<< endl;
-	cout<< "Velocity of Body 1: {" << Vv1[0] << " " << Vv1[1]<< " " << Vv1[2]<< "}"<< endl<<endl;
-	cout<< "Position of Body 2: {" << pv2[0] << " " << pv2[1]<< " " << pv2[2]<< "}"<< endl;
-	cout<< "Velocity of Body 2: {" << Vv2[0] << " " << Vv2[1]<< " " << Vv2[2]<< "}"<< endl<<endl;
-	cout<< "mu = "<<mu<<" km^3/s^2" <<endl;
-	cout<< "Time of flight: "<<tof<<" seconds"<<endl<<endl;
-	
-	cout<<"GLambert has returned "<<check<<endl;
 	
 	cout<< "vi = {" << vi[0] << " " << vi[1]<< " " << vi[2]<< "}"<< endl;
 	cout<< "vf = {" << vf[0] << " " << vf[1]<< " " << vf[2]<< "}"<< endl;
