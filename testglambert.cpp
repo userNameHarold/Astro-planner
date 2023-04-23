@@ -4,7 +4,6 @@
 #include <sstream> // for reading data from csv
 #include <cfloat> // for DBL_MAX
 
-
 #include <glm/ext/vector_double3.hpp> // for dvec3 type, 3-component vectors of double precision
 
 #include "glambert.hpp" // function GLambert
@@ -33,6 +32,7 @@ int main(){
 	std::vector<double> JDbodyOne;
 	std::vector<double> JDbodyTwo;
 	
+	
 	std::string body1name;
 	std::string body2name;
 	std::string target = "Target body name: ";
@@ -55,6 +55,7 @@ int main(){
    // Read the file line by line
     	
     while (std::getline(infile_one, line)) {
+
 		// get the name of the planet in question
 		if (!foundName){
 			pos = line.find(target);
@@ -75,6 +76,7 @@ int main(){
 		
 		// ignore lines after "$$EOE" and stop reading
 		if (line.find("$$EOE") != std::string::npos) {
+
 			start_reading = false; // set up bools for next read
 			foundName = false; 
 			break;
@@ -106,12 +108,14 @@ int main(){
 			vz = std::stod(vz_str);
 			
 			// assemble the doubles into dvec3 arrays
+
             positions_b1.emplace_back(x, y, z);
             velocities_b1.emplace_back(vx, vy, vz);
 			bodyOneDate.emplace_back(date_str);
 			JDbodyOne.emplace_back(jd);
 			++count_body_one;
         }
+
 		
 		++loopCount;
     }
@@ -128,6 +132,7 @@ int main(){
         return -1;
     }
 	
+
 	while (std::getline(infile_two, line)) {
 		
 		// get name of second body
@@ -152,6 +157,7 @@ int main(){
 		if (line.find("$$EOE") != std::string::npos) {
 			start_reading = false;
 			break;
+
 		}
 
 		// Parse the line if we're past the "$$SOE" line
@@ -180,6 +186,7 @@ int main(){
 			vz = std::stod(vz_str);
 			
 			// assemble dvec3 arrays
+
 			positions_b2.emplace_back(x, y, z);
 			velocities_b2.emplace_back(vx, vy, vz);
 			bodyTwoDate.emplace_back(date_str);
@@ -190,6 +197,8 @@ int main(){
     infile_two.close();
 	
 	std::string outFileName = body1name + "To " + body2name + "Transfer.txt";
+	
+// the following is an outdated feature from a rpevious version. It is left in as comments for the situation where a 1:1 related between depature and arrival dates is needed	
 	
 	// if (count_body_one != count_body_two){
 		// std::cout<<"You have different numbers of datum's for the two bodies."<<std::endl<<std::endl;
@@ -218,6 +227,7 @@ int main(){
 	double tof = 86400*185;
 	int nrev = 0;
 	int check = -1; // errors if not reassigned properly
+
 	
 	std::ofstream outFile;
 	outFile.open(outFileName, std::ios::app);
@@ -288,10 +298,29 @@ int main(){
 	outFile.close();
 	
 	
-	std::cout<<"minDVpos = "<<minDVpos[0]<<" "<<minDVpos[1]<<std::endl;
-	std::cout<<"maxDVpos = "<<maxDVpos[0]<<" "<<maxDVpos[1]<<std::endl;
+	/* for (int i = 0; i < (count); ++i){
+		
+		tof = (JDbodyTwo[i] - JDbodyOne[i]) * 86400; // turn difference in dates into time of flight by multiplying by seconds per day
+		if (tof == 0){
+			std::cout<<"Instantaneous travel not possible."<<std::endl;
+			tof = 1;
+		}
+		
+		check = glambert(&vi, &vf, mu, positions_e[i], velocities_e[i], positions_v[i], velocities_v[i], tof, nrev);
+		if (check == -1) {
+			std::cout<<"Glambert has returned -1"<<std::endl;
+		} else {
+			std::cout<<"Departing on "<<bodyOneDate[i]<<std::endl<<"Arriving on "<<bodyTwoDate[i]<<std::endl;
+			std::cout<<"vi = ";
+			printdvec3(vi);
+			std::cout<<"vf = ";
+			printdvec3(vf);
+			std::cout<<std::endl;
+		}
+	} */
 	std::cout<<std::endl<<"The best transfer takes "<<minDV<<"km/s of delta V, and occurs when leaving "<<body1name<<"on "<<bodyOneDate[minDVpos[0]]<<" and arriving at "<<body2name<<"on "<<bodyTwoDate[minDVpos[1]]<<std::endl;
 	std::cout<<"The worst transfer takes "<<maxDV<<"km/s of dela V, and occurs when leaving "<<body1name<<"on "<<bodyOneDate[maxDVpos[0]]<<" and arriving at "<<body2name<<"on "<<bodyTwoDate[maxDVpos[1]]<<std::endl;
+
 	
 	
 	return check;
