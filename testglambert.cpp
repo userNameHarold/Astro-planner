@@ -241,6 +241,8 @@ int main(){
 	
 	for (int i = 0; i < count_body_one; ++i){
 		
+	auto start_time = std::chrono::high_resolution_clock::now();
+		
 		for (int j = 0; j < count_body_two; ++j){
 		
 			tof = (JDbodyTwo[j] - JDbodyOne[i]) * 86400; // turn difference in dates into time of flight by multiplying by seconds per day
@@ -293,6 +295,9 @@ int main(){
 		}
 	}
 	
+	auto end_time = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+	
 	outFile<<std::endl<<"The best transfer takes "<<minDV<<"km/s of delta V, and occurs when leaving "<<body1name<<"on "<<bodyOneDate[minDVpos[0]]<<" and arriving at "<<body2name<<"on "<<bodyTwoDate[minDVpos[1]]<<std::endl;
 	outFile<<"The worst transfer takes "<<maxDV<<"km/s of dela V, and occurs when leaving "<<body1name<<"on "<<bodyOneDate[maxDVpos[0]]<<" and arriving at "<<body2name<<"on "<<bodyTwoDate[maxDVpos[1]]<<std::endl;
 	outFile.close();
@@ -320,7 +325,8 @@ int main(){
 	} */
 	std::cout<<std::endl<<"The best transfer takes "<<minDV<<"km/s of delta V, and occurs when leaving "<<body1name<<"on "<<bodyOneDate[minDVpos[0]]<<" and arriving at "<<body2name<<"on "<<bodyTwoDate[minDVpos[1]]<<std::endl;
 	std::cout<<"The worst transfer takes "<<maxDV<<"km/s of dela V, and occurs when leaving "<<body1name<<"on "<<bodyOneDate[maxDVpos[0]]<<" and arriving at "<<body2name<<"on "<<bodyTwoDate[maxDVpos[1]]<<std::endl;
-
+	std::cout<<"Calculating "<< total_num_transfers <<" orbital transfers took "<<duration.count() <<" milliseconds."<<std::endl;
+	
 	
 	
 	return check;
